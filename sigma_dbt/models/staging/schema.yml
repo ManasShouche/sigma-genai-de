@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: sigma_analytics
+    database: SIGMA_DE
+    schema: PUBLIC
+    tables:
+      - name: fact_transactions
+      - name: dim_merchant
+      - name: dim_customer
+
+models:
+  - name: stg_transactions
+    description: "Staged and cleaned fact_transactions data"
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction"
+        tests:
+          - not_null
+          - unique
+      - name: amount
+        description: "Amount of the transaction in USD"
+      - name: status
+        description: "Status of the transaction"
+        tests:
+          - accepted_values:
+              values: ['COMPLETED', 'FAILED', 'PENDING']
+      - name: merchant_id
+        description: "FK to dim_merchant"
+      - name: customer_id
+        description: "FK to dim_customer"
+      - name: transaction_date
+        description: "Date of the transaction"
+      - name: payment_method
+        description: "Payment method used"
+        tests:
+          - accepted_values:
+              values: ['CREDIT_CARD', 'DEBIT_CARD', 'UPI']

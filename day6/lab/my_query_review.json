@@ -1,0 +1,43 @@
+{
+  "file": "queries/my_query.sql",
+  "reviewed_at": "2026-05-25T18:35:42.122226",
+  "issues_found": 4,
+  "review": {
+    "issues": [
+      {
+        "severity": "Critical",
+        "category": "Correctness",
+        "title": "Incorrect Revenue Calculation",
+        "line": "SUM(b.amount) AS s",
+        "problem": "The query sums all transaction amounts without filtering for 'COMPLETED' status.",
+        "fix": "SUM(CASE WHEN b.status = 'COMPLETED' THEN b.amount ELSE 0 END) AS s"
+      },
+      {
+        "severity": "Medium",
+        "category": "Performance",
+        "title": "Correlated Subquery",
+        "line": "Subquery in SELECT clause",
+        "problem": "The correlated subquery can be inefficient as it runs for each row in the result set.",
+        "fix": "LEFT JOIN a subquery with pre-aggregated failed counts."
+      },
+      {
+        "severity": "Low",
+        "category": "Readability",
+        "title": "Implicit Join Syntax",
+        "line": "FROM dim_customer a, fact_transactions b, dim_merchant c",
+        "problem": "Implicit join syntax is less readable and more prone to errors.",
+        "fix": "Use explicit JOIN syntax for better readability."
+      },
+      {
+        "severity": "Low",
+        "category": "Readability",
+        "title": "Lack of Comments",
+        "line": "Entire query",
+        "problem": "The query lacks comments explaining the logic, especially around the revenue calculation and failure rate.",
+        "fix": "Add comments explaining the logic of the query."
+      }
+    ],
+    "corrected_sql": "WITH failed_transactions AS (\n  SELECT x.customer_id, COUNT(*) AS failed_count\n  FROM fact_transactions x\n  WHERE x.status = 'FAILED'\n  GROUP BY x.customer_id\n)\nSELECT a.customer_name,\n       a.email,\n       a.tier,\n       a.city,\n       SUM(CASE WHEN b.status = 'COMPLETED' THEN b.amount ELSE 0 END) AS revenue,\n       COALESCE(f.failed_count, 0) AS failed_count\nFROM dim_customer a\nJOIN fact_transactions b ON a.customer_id = b.customer_id\nJOIN dim_merchant c ON b.merchant_id = c.merchant_id\nLEFT JOIN failed_transactions f ON a.customer_id = f.customer_id\nWHERE c.category = 'Food Delivery'\nGROUP BY a.customer_name, a.email, a.tier, a.city, a.customer_id\nORDER BY revenue DESC;",
+    "summary": "The query had issues with revenue calculation, performance due to a correlated subquery, readability with implicit joins, and lacked comments."
+  }
+}

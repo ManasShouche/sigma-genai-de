@@ -1,0 +1,35 @@
+{
+  "file": "queries/daily_failure_rate.sql",
+  "reviewed_at": "2026-05-25T18:35:32.373473",
+  "issues_found": 3,
+  "review": {
+    "issues": [
+      {
+        "severity": "Critical",
+        "category": "Correctness",
+        "title": "Incorrect calculation of failure rate",
+        "line": "failed_count / total_count * 100 as failure_rate",
+        "problem": "The failure rate is being calculated incorrectly because the failed_count is being calculated per row, not per group.",
+        "fix": "Use a subquery to calculate the failed_count and total_count separately."
+      },
+      {
+        "severity": "Medium",
+        "category": "Performance",
+        "title": "Correlated subquery",
+        "line": "SELECT COUNT(*) FROM fact_transactions f2 WHERE f2.status = 'FAILED' AND f2.transaction_date = t.transaction_date",
+        "problem": "The correlated subquery can be inefficient as it runs for each row in the outer query.",
+        "fix": "Use a JOIN to calculate the failed_count."
+      },
+      {
+        "severity": "Low",
+        "category": "Readability",
+        "title": "Lack of comments",
+        "line": "Entire query",
+        "problem": "The query lacks comments explaining the logic, which makes it harder to understand.",
+        "fix": "Add comments to explain the logic of the query."
+      }
+    ],
+    "corrected_sql": "WITH transaction_counts AS (\n  SELECT\n    transaction_date,\n    COUNT(CASE WHEN status = 'FAILED' THEN 1 END) as failed_count,\n    COUNT(*) as total_count\n  FROM fact_transactions\n  GROUP BY transaction_date\n)\nSELECT\n  t.transaction_date,\n  tc.failed_count,\n  tc.total_count,\n  (tc.failed_count * 1.0 / tc.total_count) * 100 as failure_rate\nFROM transaction_counts tc\nORDER BY t.transaction_date;",
+    "summary": "The query had issues with the calculation of the failure rate, a correlated subquery affecting performance, and a lack of comments for readability."
+  }
+}

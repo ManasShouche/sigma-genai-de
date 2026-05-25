@@ -1,0 +1,43 @@
+{
+  "file": "queries/customer_spend.sql",
+  "reviewed_at": "2026-05-25T18:35:24.734896",
+  "issues_found": 4,
+  "review": {
+    "issues": [
+      {
+        "severity": "Critical",
+        "category": "Correctness",
+        "title": "Missing Join with Merchant Table",
+        "line": "1",
+        "problem": "The query does not join the dim_merchant table, but the business rule requires merchant names to be shown.",
+        "fix": "LEFT JOIN sigma_analytics.dim_merchant m ON c.merchant_id = m.merchant_id"
+      },
+      {
+        "severity": "Medium",
+        "category": "Correctness",
+        "title": "Incorrect Aggregation for Lifetime Value",
+        "line": "5",
+        "problem": "The query calculates lifetime value for all transactions, not just completed ones, which violates the business rule.",
+        "fix": "SUM(CASE WHEN t.status = 'COMPLETED' THEN t.amount ELSE 0 END) as lifetime_value"
+      },
+      {
+        "severity": "Medium",
+        "category": "Correctness",
+        "title": "Incorrect Grouping for Total Orders",
+        "line": "7",
+        "problem": "The query groups by customer_name, email, which might lead to incorrect total orders if customers have the same name and email.",
+        "fix": "GROUP BY c.customer_id, c.customer_name, c.email, c.tier"
+      },
+      {
+        "severity": "Low",
+        "category": "Readability",
+        "title": "Lack of Comments",
+        "line": "0",
+        "problem": "The query lacks comments explaining the logic, which makes it harder to understand.",
+        "fix": "Add comments explaining the purpose of each clause."
+      }
+    ],
+    "corrected_sql": "SELECT c.customer_name, c.email, c.tier,\n       SUM(CASE WHEN t.status = 'COMPLETED' THEN t.amount ELSE 0 END) as lifetime_value,\n       COUNT(CASE WHEN t.status = 'COMPLETED' THEN t.transaction_id ELSE NULL END) as total_orders\nFROM dim_customer c\nLEFT JOIN fact_transactions t ON c.customer_id = t.customer_id\nLEFT JOIN sigma_analytics.dim_merchant m ON c.merchant_id = m.merchant_id\nGROUP BY c.customer_id, c.customer_name, c.email, c.tier\nHAVING SUM(CASE WHEN t.status = 'COMPLETED' THEN t.amount ELSE 0 END) > 1000\nORDER BY lifetime_value DESC;",
+    "summary": "The query had issues with missing joins, incorrect aggregations, and readability. Fixes included joining the merchant table, correctly calculating lifetime value, and improving grouping and readability."
+  }
+}

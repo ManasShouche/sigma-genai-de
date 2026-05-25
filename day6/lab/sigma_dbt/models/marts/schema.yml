@@ -1,0 +1,51 @@
+version: 2
+
+mart_fact_transactions:
+  description: "Mart for transaction data with business metrics"
+  columns:
+    transaction_id:
+      description: "Unique identifier for each transaction"
+      tests:
+        - not_null
+    amount:
+      description: "Amount of the transaction in USD"
+      tests:
+        - not_null
+    status:
+      description: "Status of the transaction (COMPLETED, FAILED, PENDING)"
+      tests:
+        - not_null
+        - accepted_values:
+            values: ['COMPLETED', 'FAILED', 'PENDING', 'CANCELLED'] # CANCELLED should fail
+    merchant_id:
+      description: "Foreign key to dim_merchant"
+      tests:
+        - not_null
+        - relationships:
+            to: ref('dim_merchant')
+            field: merchant_id
+    customer_id:
+      description: "Foreign key to dim_customer"
+      tests:
+        - not_null
+        - relationships:
+            to: ref('dim_customer')
+            field: customer_id
+    transaction_date:
+      description: "Date of the transaction"
+      tests:
+        - not_null
+    payment_method:
+      description: "Payment method used (CREDIT_CARD, DEBIT_CARD, UPI)"
+      tests:
+        - not_null
+    failure_rate_pct:
+      description: "Failure rate percentage of transactions"
+      tests:
+        - between:
+            min_value: 0
+            max_value: 100
+    total_revenue:
+      description: "Total revenue from completed transactions"
+      tests:
+        - greater_than_equal_to: 0

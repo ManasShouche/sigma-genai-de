@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: mart_merchant_performance
+    description: "Aggregated merchant KPIs: revenue, transaction counts, failure rate, unique customers."
+    columns:
+      - name: merchant_id
+        description: "Unique identifier for the merchant"
+        tests:
+          - not_null
+          - unique
+      - name: merchant_name
+        description: "Name of the merchant"
+        tests:
+          - not_null
+      - name: category
+        description: "Category of the merchant"
+      - name: city
+        description: "City where the merchant is located"
+      - name: onboarded_date
+        description: "Date when the merchant was onboarded"
+      - name: total_transactions
+        description: "Total number of transactions"
+        tests:
+          - not_null
+      - name: failed_count
+        description: "Number of failed transactions"
+        tests:
+          - not_null
+      - name: failure_rate_pct
+        description: "Failure rate percentage"
+        tests:
+          - not_null
+      - name: total_revenue
+        description: "Total revenue (USD) from completed transactions"
+        tests:
+          - not_null
+      - name: avg_transaction_value
+        description: "Average value of completed transactions"
+      - name: unique_customers
+        description: "Number of distinct customers"
+        tests:
+          - not_null

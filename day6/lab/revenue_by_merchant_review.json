@@ -1,0 +1,43 @@
+{
+  "file": "queries/revenue_by_merchant.sql",
+  "reviewed_at": "2026-05-25T18:35:50.069086",
+  "issues_found": 4,
+  "review": {
+    "issues": [
+      {
+        "severity": "Critical",
+        "category": "Correctness",
+        "title": "Incorrect Revenue Calculation",
+        "line": "SUM(t.amount) as total_revenue",
+        "problem": "The query sums all transaction amounts without filtering for completed transactions only.",
+        "fix": "SUM(CASE WHEN t.status = 'COMPLETED' THEN t.amount ELSE 0 END) as total_revenue"
+      },
+      {
+        "severity": "Medium",
+        "category": "Performance",
+        "title": "Potentially Missing Index",
+        "line": "WHERE t.transaction_date > '2024-01-01'",
+        "problem": "The query may not use an index on transaction_date, which could slow down performance.",
+        "fix": "Ensure an index exists on fact_transactions.transaction_date"
+      },
+      {
+        "severity": "Low",
+        "category": "Readability",
+        "title": "Implicit Join Syntax",
+        "line": "FROM fact_transactions t, dim_merchant m",
+        "problem": "Using implicit join syntax can make the query less readable and harder to maintain.",
+        "fix": "FROM fact_transactions t JOIN dim_merchant m ON t.merchant_id = m.merchant_id"
+      },
+      {
+        "severity": "Low",
+        "category": "Readability",
+        "title": "Lack of Comments",
+        "line": "Entire Query",
+        "problem": "The query lacks comments explaining its purpose and logic.",
+        "fix": "Add comments explaining the purpose and logic of the query."
+      }
+    ],
+    "corrected_sql": "SELECT m.merchant_name, SUM(CASE WHEN t.status = 'COMPLETED' THEN t.amount ELSE 0 END) as total_revenue, COUNT(*) as txn_count FROM fact_transactions t JOIN dim_merchant m ON t.merchant_id = m.merchant_id WHERE t.transaction_date > '2024-01-01' GROUP BY m.merchant_name ORDER BY total_revenue LIMIT 10;",
+    "summary": "The query has a critical correctness issue with revenue calculation and some readability improvements. Ensure indexes are in place for optimal performance."
+  }
+}
