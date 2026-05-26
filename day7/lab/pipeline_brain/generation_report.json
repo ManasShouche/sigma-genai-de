@@ -1,0 +1,18 @@
+{
+  "model": "amazon.nova-lite-v1:0",
+  "strategy": "two_phase",
+  "spec_chars": 2657,
+  "bronze_silver_tokens": {
+    "input": 1060,
+    "output": 1186
+  },
+  "gold_tokens": {
+    "input": 1138,
+    "output": 944
+  },
+  "total_tokens_in": 2198,
+  "total_tokens_out": 2130,
+  "output_file": "pipeline_brain/generated_pipeline.py",
+  "output_bytes": 8982,
+  "generated_at": "2026-05-26T08:56:45.281719+00:00"
+}
