@@ -1,0 +1,64 @@
+{
+  "CRITICAL": [
+    {
+      "name": "data_freshness_breach",
+      "condition": "Data is older than 24 hours",
+      "threshold": "24",
+      "message": "Data freshness is breached: Data is older than 24 hours.",
+      "recommended_action": "Investigate and resolve the data ingestion issue immediately."
+    },
+    {
+      "name": "quality_threshold_breach",
+      "condition": "Data quality percentage is below 99.9%",
+      "threshold": "99.9",
+      "message": "Data quality threshold breached: Quality percentage is below 99.9%.",
+      "recommended_action": "Investigate and resolve the data quality issue immediately."
+    },
+    {
+      "name": "row_count_outside_bounds",
+      "condition": "Row count is outside the bounds of 17 to 25",
+      "threshold": "17, 25",
+      "message": "Row count is outside the SLO bounds: 17 to 25.",
+      "recommended_action": "Investigate and resolve the row count anomaly immediately."
+    }
+  ],
+  "WARNING": [
+    {
+      "name": "runtime_approaching_limit",
+      "condition": "Pipeline runtime is approaching the 120-minute limit",
+      "threshold": "120",
+      "message": "Pipeline runtime is approaching the 120-minute limit.",
+      "recommended_action": "Monitor the pipeline runtime and investigate if it exceeds the limit."
+    },
+    {
+      "name": "quality_slightly_below_threshold",
+      "condition": "Data quality percentage is slightly below 99.9%",
+      "threshold": "99.85",
+      "message": "Data quality is slightly below the threshold: 99.85%.",
+      "recommended_action": "Investigate the cause of the slight drop in data quality."
+    },
+    {
+      "name": "merchant_failure_rate_spike",
+      "condition": "One merchant's failure rate spikes above 30%",
+      "threshold": "30",
+      "message": "One merchant's failure rate has spiked above 30%.",
+      "recommended_action": "Investigate and resolve the issue with the merchant's data processing."
+    }
+  ],
+  "INFO": [
+    {
+      "name": "new_payment_method_detected",
+      "condition": "A new payment method is detected in the data",
+      "threshold": "N/A",
+      "message": "A new payment method has been detected in the data.",
+      "recommended_action": "Log the new payment method for future reference."
+    },
+    {
+      "name": "row_count_near_bounds",
+      "condition": "Daily row count is near the bounds of 17 to 25",
+      "threshold": "17, 25",
+      "message": "Daily row count is near the SLO bounds: 17 to 25.",
+      "recommended_action": "Monitor the row count for any anomalies."
+    }
+  ]
+}
