@@ -6,6 +6,22 @@ import urllib.request
 import urllib.error
 from datetime import datetime, timezone, timedelta
 
+# For days that have a "master" tier, list the core files required for "complete"
+# and the extra files required for "master". Other days have no master tier.
+MASTER_TIER = {
+    7: {
+        "core": [
+            "pipeline_brain/generated_pipeline.py",
+            "pipeline_brain/sigma_dag.py",
+            "pipeline_brain/hardened_pipeline.py",
+        ],
+        "extra": [
+            "pipeline_brain/schema_drift_report.json",
+            "pipeline_brain/code_review.json",
+        ],
+    }
+}
+
 EXPECTED_FILES = {
     6: {
         "review_report.json": "SQL Review",
@@ -16,7 +32,16 @@ EXPECTED_FILES = {
         "pipeline_brain/generated_pipeline.py": "Pipeline",
         "pipeline_brain/sigma_dag.py": "DAG",
         "pipeline_brain/hardened_pipeline.py": "Hardened",
+        "pipeline_brain/schema_drift_report.json": "SchemaDrift",
         "pipeline_brain/code_review.json": "Review",
+    },
+    8: {
+        "devops_brain/code_review_report.json":    "Review",
+        "devops_brain/doc_report.json":            "Docs",
+        "devops_brain/testing_report.json":        "Tests",
+        "devops_brain/ci_slo_report.json":         "CI/SLO",
+        "devops_brain/observability_report.json":  "Observe",
+        "devops_brain/competitive/scorecard.json": "Ship",
     },
 }
 
@@ -72,23 +97,40 @@ def get_all_forks(owner, repo, token):
     return forks
 
 
-def check_file_exists(fork_owner, fork_repo, file_path, token):
-    """Return True if the file exists in the fork (HTTP 200), False otherwise."""
-    url = f'https://api.github.com/repos/{fork_owner}/{fork_repo}/contents/{file_path}'
-    status, _ = github_get(url, token)
-    return status == 200
+def get_fork_file_tree(fork_owner, fork_repo, token):
+    """Fetch all file paths in the fork's default branch in one API call.
+    Returns a set of lowercase paths, or None if the call failed."""
+    url = f'https://api.github.com/repos/{fork_owner}/{fork_repo}/git/trees/HEAD?recursive=1'
+    status, body = github_get(url, token)
+    if status != 200 or not body or 'tree' not in body:
+        return None
+    return {item['path'].lower() for item in body['tree'] if item.get('type') == 'blob'}
 
 
-def compute_status(files_found):
+def compute_status(files_found, day_num=None):
     """Convert a dict of {filename: bool} to a status string."""
     if not files_found:
         return "missing"
     values = list(files_found.values())
+    if not any(values):
+        return "missing"
+
+    # Check master tier first (all 5 files present)
+    if day_num in MASTER_TIER:
+        tier = MASTER_TIER[day_num]
+        core_done  = all(files_found.get(f, False) for f in tier["core"])
+        extra_done = all(files_found.get(f, False) for f in tier["extra"])
+        if core_done and extra_done:
+            return "master"
+        if core_done:
+            return "complete"
+        if any(values):
+            return "partial"
+        return "missing"
+
     if all(values):
         return "complete"
-    if any(values):
-        return "partial"
-    return "missing"
+    return "partial"
 
 
 def ist_now():
@@ -140,6 +182,9 @@ def build_response():
         canonical = known_usernames_lower.get(fork_owner.lower(), fork_owner)
         real_name = name_map.get(canonical, fork_owner)
 
+        # One API call gets ALL files in the fork — replaces N*files individual calls
+        tree = get_fork_file_tree(fork_owner, fork_repo, token)
+
         student_entry = {
             "github": fork_owner,
             "real_name": real_name,
@@ -149,19 +194,22 @@ def build_response():
             file_specs = EXPECTED_FILES[day_num]
             files_found = {}
             for rel_path, label in file_specs.items():
-                full_path = f'day{day_num}/lab/{rel_path}'
-                exists = check_file_exists(fork_owner, fork_repo, full_path, token)
+                full_path = f'day{day_num}/lab/{rel_path}'.lower()
+                if tree is None:
+                    exists = False
+                else:
+                    exists = full_path in tree
                 files_found[rel_path] = exists
 
             student_entry[f'day{day_num}'] = {
-                "status": compute_status(files_found),
+                "status": compute_status(files_found, day_num),
                 "files": files_found,
             }
 
         students_data.append(student_entry)
 
     # Sort: complete first, then partial, then missing; ties broken by name
-    rank = {"complete": 0, "partial": 1, "missing": 2}
+    rank = {"master": 0, "complete": 1, "partial": 2, "missing": 3}
 
     def sort_key(s):
         total_complete = sum(
