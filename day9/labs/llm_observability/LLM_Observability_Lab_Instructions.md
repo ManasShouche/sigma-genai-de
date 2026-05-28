@@ -12,7 +12,7 @@ In this lab, you will use **OpenTelemetry (OTel)** and **Arize Phoenix** to inst
 Open your terminal and run the following command to install the OpenTelemetry instrumentors and the local Arize Phoenix trace collector:
 
 ```bash
-pip install arize-phoenix openinference-instrumentation-bedrock opentelemetry-sdk opentelemetry-exporter-otlp
+pip3 install arize-phoenix openinference-instrumentation-bedrock opentelemetry-sdk opentelemetry-exporter-otlp
 ```
 
 *   **arize-phoenix:** Launches the local dashboard and stores tracing telemetry in memory.
