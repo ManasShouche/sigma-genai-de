@@ -20,7 +20,7 @@ It creates two tables:
 
 Run the setup script:
 ```bash
-python setup_soda_data.py
+python3 setup_soda_data.py
 ```
 *You should see a message saying the database is ready.*
 
