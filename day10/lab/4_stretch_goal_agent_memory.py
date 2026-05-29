@@ -165,12 +165,7 @@ class HealingMemory:
 BROKEN_PIPELINE = '''\
 import duckdb, os
 
-<<<<<<< HEAD
 DB_PATH = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "day9", "shared", "sigma_platform.duckdb"))
-=======
-DB_PATH = r"<<<DB_PATH>>>"  # injected at runtime — safe across temp file execution
-'''.replace("<<<DB_PATH>>>", DB_PATH) + '''\
->>>>>>> 83d5fc253a8457c3903da527641897b01c810c15
 
 def run_merchant_report():
     conn = duckdb.connect(DB_PATH)

@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "openmetadata_sandbox": true,
+  "tables_catalogued": [
+    "silver_transactions",
+    "bronze_transactions",
+    "gold_merchant_performance"
+  ],
+  "data_quality_checks": 3,
+  "lineage_documented": true,
+  "completed_at": "2026-05-29T17:50:00.224001"
+}
