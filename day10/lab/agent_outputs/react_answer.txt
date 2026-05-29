@@ -1,0 +1,6 @@
+Question: Which 3 merchants had the most suspicious transaction patterns? Look for merchants with high transaction volume but also unusual average amounts (either very high or very low compared to others). Give me their names, transaction count, and average amount.
+
+Steps taken: 6
+
+Answer:
+The three merchants with the most suspicious transaction patterns are Swiggy with 3 transactions and an average amount of 420.00, BookMyShow with 2 transactions and an average amount of 765.00, and Amazon with 2 transactions and an average amount of 1045.25.

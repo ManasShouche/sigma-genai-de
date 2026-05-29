@@ -1,0 +1,12 @@
+[
+  {
+    "q": "Which payment methods are growing fastest this month compared to last month? Show percentage growth.",
+    "sql": "SELECT payment_method, COALESCE(((SUM(CASE WHEN transaction_date >= DATE_TRUNC('month', CURRENT_DATE) THEN amount ELSE 0 END) - SUM(CASE WHEN transaction_date >= DATE_TRUNC('month', CURRENT_DATE - INTERVAL '1 month') AND transaction_date < DATE_TRUNC('month', CURRENT_DATE) THEN amount ELSE 0 END)) * 100.0 / NULLIF(SUM(CASE WHEN transaction_date >= DATE_TRUNC('month', CURRENT_DATE - INTERVAL '1 month') AND transaction_date < DATE_TRUNC('month', CURRENT_DATE) THEN amount ELSE 0 END), 0)), 0) AS growth_percentage FROM silver_transactions WHERE transaction_date >= DATE_TRUNC('month', CURRENT_DATE - INTERVAL '1 month') AND transaction_date < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month' AND payment_method IS NOT NULL AND amount IS NOT NULL GROUP BY payment_method ORDER BY growth_percentage DESC;",
+    "rounds": 3
+  },
+  {
+    "q": "Which 5 merchants have the highest refund rate? Show refund count and total transaction count.",
+    "sql": "SELECT m.merchant_id, m.merchant_name, SUM(CASE WHEN st.status = 'REFUNDED' THEN 1 ELSE 0 END) AS refund_count, COUNT(DISTINCT st.transaction_id) AS total_transaction_count, (SUM(CASE WHEN st.status = 'REFUNDED' THEN 1.0 ELSE 0 END) / NULLIF(COUNT(DISTINCT st.transaction_id), 0)) AS refund_rate FROM merchants m JOIN (SELECT DISTINCT transaction_id, status, merchant_id FROM silver_transactions WHERE quality_flag = 'PASS' AND transaction_date >= DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '1 year' AND transaction_date < DATE_TRUNC('year', CURRENT_DATE) + INTERVAL '1 year') st ON m.merchant_id = st.merchant_id GROUP BY m.merchant_id, m.merchant_name ORDER BY refund_rate DESC LIMIT 5;",
+    "rounds": 3
+  }
+]
