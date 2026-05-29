@@ -1,0 +1,14 @@
+[
+  {
+    "merchant_id": "M003",
+    "merchant_name": "Zomato",
+    "reason": "100% transaction failure rate across 1 transactions — total revenue $0.00",
+    "flagged_at": "2026-05-29T13:29:23.634208+00:00"
+  },
+  {
+    "merchant_id": "M006",
+    "merchant_name": "BookMyShow",
+    "reason": "50% transaction failure rate across 2 transactions — total revenue $990.00",
+    "flagged_at": "2026-05-29T13:29:23.634264+00:00"
+  }
+]
