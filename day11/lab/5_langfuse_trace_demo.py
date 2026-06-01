@@ -26,14 +26,70 @@ YOUR JOB:
 Without Langfuse: you would grep through 847 log lines and maybe find it.
 With Langfuse: 30 seconds.
 
-SETUP (one-time):
-  pip install langfuse boto3 --break-system-packages -q
-  export LANGFUSE_PUBLIC_KEY="pk-lf-..."
-  export LANGFUSE_SECRET_KEY="sk-lf-..."
-  export LANGFUSE_HOST="https://cloud.langfuse.com"
+SETUP (one-time — ~5 minutes)
+----------------------------------
+STEP 1 — Create free Langfuse account:
+  Go to https://cloud.langfuse.com → Sign Up (use your Gmail)
+  Create a new project → name it "sigma-datatech"
+
+STEP 2 — Get your API keys:
+  Inside your project → click Settings (left sidebar) → API Keys
+  Click "Create new API key"
+  Copy both:
+    Public Key  →  starts with  pk-lf-...
+    Secret Key  →  starts with  sk-lf-...
+  (You only see the secret key ONCE — copy it now)
+
+STEP 3 — Set environment variables (run in your terminal BEFORE running this script):
+
+  Windows PowerShell (blue window):
+    $env:LANGFUSE_PUBLIC_KEY = "pk-lf-xxxx"
+    $env:LANGFUSE_SECRET_KEY = "sk-lf-xxxx"
+    $env:LANGFUSE_HOST       = "https://cloud.langfuse.com"
+
+  Windows Command Prompt (C:\\> black window):
+    set LANGFUSE_PUBLIC_KEY=pk-lf-xxxx
+    set LANGFUSE_SECRET_KEY=sk-lf-xxxx
+    set LANGFUSE_HOST=https://cloud.langfuse.com
+    (no quotes, no spaces around the = sign)
+
+  Mac/Linux terminal:
+    export LANGFUSE_PUBLIC_KEY="pk-lf-xxxx"
+    export LANGFUSE_SECRET_KEY="sk-lf-xxxx"
+    export LANGFUSE_HOST="https://cloud.langfuse.com"
+
+STEP 4 — Install the library:
+  pip install langfuse
 
 RUN:
-  python lab/5_langfuse_trace_demo.py
+  python 5_langfuse_trace_demo.py
+
+VERIFY:
+  After running, go to https://cloud.langfuse.com → your project → Traces
+  You should see 5 traces appear within 10 seconds.
+
+WHAT YOU WILL SEE IN LANGFUSE
+------------------------------
+Each trace = one LLM call for one transaction. For each trace you will see:
+
+  Traces list (main screen):
+    - Trace name      e.g. "quality-check-TXN100489"
+    - Tags            day11, quality-agent, run-HHMMSS
+    - Score           1.0 = correct decision, 0.0 = wrong decision  ← find the red one
+    - Latency         how long the Bedrock call took (ms)
+    - Token count     input + output tokens used
+
+  Click any trace to drill in:
+    - Input           the exact prompt sent to the LLM (merchant, amount, date, rules)
+    - Output          the raw JSON the LLM returned  {"decision": "...", "reason": "..."}
+    - Metadata        transaction_id, merchant name, amount, expected vs actual decision
+    - Score detail    comment showing "Expected PASS, got FLAG. Reason: ..."
+
+  The bad trace (score = 0.0):
+    TXN100489 — Apollo Hospital — ₹9,80,000
+    The LLM said FLAG because it saw a large amount with no merchant category.
+    In the Input panel you will notice: no "merchant_category" field in the prompt.
+    That is the missing context. Fix build_prompt() → re-run → score flips to 1.0.
 ==============================================================================
 """
 
@@ -55,7 +111,7 @@ TRANSACTIONS = [
         "merchant": "QuickMart",
         "amount": 4521.50,
         "currency": "INR",
-        "date": "2026-06-01",
+        "date": "2025-11-15",
         "note": "Standard retail transaction",
         "expected": "PASS",
     },
@@ -64,7 +120,7 @@ TRANSACTIONS = [
         "merchant": "FuelPlus",
         "amount": -892.00,
         "currency": "INR",
-        "date": "2026-06-01",
+        "date": "2025-11-18",
         "note": "Negative amount — refund or error",
         "expected": "QUARANTINE",
     },
@@ -73,7 +129,7 @@ TRANSACTIONS = [
         "merchant": "Apollo Hospital",
         "amount": 980000.00,
         "currency": "INR",
-        "date": "2026-06-01",
+        "date": "2025-11-20",
         # ← THIS IS THE BAD PROMPT — it omits merchant context
         # The agent sees only the amount and flags it as outlier
         # Fix: add "merchant_category: healthcare" to the prompt
@@ -85,7 +141,7 @@ TRANSACTIONS = [
         "merchant": "CloudStore",
         "amount": 15230.00,
         "currency": "XYZ",
-        "date": "2026-06-01",
+        "date": "2025-11-22",
         "note": "Unknown currency code",
         "expected": "QUARANTINE",
     },
