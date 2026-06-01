@@ -38,21 +38,26 @@ def run_support_agent():
     model_id = "amazon.nova-lite-v1:0"
     
     body = {
-        "inputText": prompt,
-        "textGenerationConfig": {
-            "maxTokenCount": 200,
+        "messages": [
+            {
+                "role": "user",
+                "content": [{"text": prompt}]
+            }
+        ],
+        "inferenceConfig": {
+            "maxTokens": 200,
             "temperature": 0.2
         }
     }
-    
+
     import json
     response = bedrock.invoke_model(
         modelId=model_id,
         body=json.dumps(body)
     )
-    
+
     response_body = json.loads(response.get("body").read().decode("utf-8"))
-    output_text = response_body.get("results")[0].get("outputText")
+    output_text = response_body["output"]["message"]["content"][0]["text"]
     print(f"\nResponse from LLM:\n{output_text}")
 
 if __name__ == "__main__":
