@@ -118,10 +118,10 @@ TIMELINE = [
 ]
 
 SEVERITY_COLORS = {
-    "critical": "#ff4757",
-    "warning":  "#ffa502",
-    "info":     "#00d4ff",
-    "success":  "#2ed573",
+    "critical": "#f43f5e",
+    "warning":  "#f59e0b",
+    "info":     "#38bdf8",
+    "success":  "#2dd4bf",
 }
 
 # ── Page config (MUST be first Streamlit call) ────────────────────────────────
@@ -132,505 +132,320 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ── Premium Dark Theme CSS ────────────────────────────────────────────────────
+# ── Cosmic Glassmorphism CSS ─────────────────────────────────────────────────
 st.markdown("""
 <style>
 /* ─── Global ─────────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 html, body, [data-testid="stAppViewContainer"] {
-    background-color: #0a0e1a !important;
-    color: #e0e6f0 !important;
-    font-family: 'Inter', sans-serif !important;
+    background-color: #06000f !important;
+    color: #ede9fe !important;
+    font-family: 'Space Grotesk', sans-serif !important;
 }
-
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0d1224 0%, #0a0e1a 100%) !important;
-    border-right: 1px solid #1e2d47 !important;
+    background: linear-gradient(180deg, #100520 0%, #06000f 100%) !important;
+    border-right: 1px solid rgba(139,92,246,0.15) !important;
 }
-
-[data-testid="stHeader"] {
-    background: transparent !important;
-}
-
-/* ─── Remove Streamlit default padding top ───────────────────────────────── */
+[data-testid="stHeader"] { background: transparent !important; }
 .block-container {
     padding-top: 1rem !important;
     padding-bottom: 2rem !important;
     max-width: 100% !important;
 }
-
-/* ─── Section dividers ───────────────────────────────────────────────────── */
 hr {
     border: none !important;
-    border-top: 1px solid #1e2d47 !important;
+    border-top: 1px solid rgba(139,92,246,0.12) !important;
     margin: 1.5rem 0 !important;
 }
-
-/* ─── Streamlit metric widget overrides ──────────────────────────────────── */
-[data-testid="stMetric"] {
-    background: #131929 !important;
-    border-radius: 8px !important;
-    padding: 1rem !important;
-}
-
-/* ─── Dataframe ──────────────────────────────────────────────────────────── */
 [data-testid="stDataFrame"] {
-    background: #131929 !important;
-    border-radius: 8px !important;
-    border: 1px solid #1e2d47 !important;
+    background: rgba(12,5,28,0.7) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(139,92,246,0.15) !important;
 }
-
-/* ─── Expander ───────────────────────────────────────────────────────────── */
 [data-testid="stExpander"] {
-    background: #131929 !important;
-    border: 1px solid #1e2d47 !important;
-    border-radius: 8px !important;
+    background: rgba(12,5,28,0.7) !important;
+    border: 1px solid rgba(139,92,246,0.15) !important;
+    border-radius: 12px !important;
 }
-
 details summary {
-    color: #00d4ff !important;
+    color: #a78bfa !important;
     font-weight: 600 !important;
+    font-family: 'Space Grotesk', sans-serif !important;
 }
-
-/* ─── Buttons ────────────────────────────────────────────────────────────── */
 [data-testid="stButton"] button {
-    background: linear-gradient(135deg, #00d4ff22, #0066ff22) !important;
-    color: #00d4ff !important;
-    border: 1px solid #00d4ff55 !important;
-    border-radius: 6px !important;
-    font-family: 'Inter', sans-serif !important;
+    background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(45,212,191,0.1)) !important;
+    color: #a78bfa !important;
+    border: 1px solid rgba(139,92,246,0.35) !important;
+    border-radius: 8px !important;
+    font-family: 'Space Grotesk', sans-serif !important;
     font-weight: 600 !important;
     transition: all 0.2s ease !important;
 }
-
 [data-testid="stButton"] button:hover {
-    background: linear-gradient(135deg, #00d4ff44, #0066ff44) !important;
-    border-color: #00d4ff !important;
-    box-shadow: 0 0 12px #00d4ff44 !important;
+    background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(45,212,191,0.2)) !important;
+    box-shadow: 0 0 16px rgba(139,92,246,0.3) !important;
+}
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #06000f; }
+::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.5); }
+[data-testid="stAlert"] {
+    background: rgba(12,5,28,0.7) !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(139,92,246,0.2) !important;
 }
 
-/* ─── Spinner ────────────────────────────────────────────────────────────── */
-[data-testid="stSpinner"] {
-    color: #00d4ff !important;
+/* ─── Glass card base ────────────────────────────────────────────────────── */
+.g-card {
+    background: rgba(12,5,28,0.65);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 1.2rem 1.4rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
 }
-
-/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #0a0e1a; }
-::-webkit-scrollbar-thumb { background: #1e2d47; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #00d4ff44; }
+.g-card:hover {
+    border-color: rgba(139,92,246,0.25);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(139,92,246,0.1);
+    transform: translateY(-2px);
+}
 
 /* ─── KPI card ───────────────────────────────────────────────────────────── */
 .kpi-card {
-    background: #131929;
-    border-radius: 10px;
-    padding: 1.2rem 1.4rem;
-    border-left: 3px solid;
+    background: rgba(12,5,28,0.65);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 1.2rem 1.3rem;
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    transition: transform 0.25s, box-shadow 0.25s;
 }
 .kpi-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
 }
-.kpi-card::after {
+.kpi-card::before {
     content: '';
     position: absolute;
-    top: 0; right: 0;
-    width: 60px; height: 60px;
-    border-radius: 50%;
-    opacity: 0.07;
-    transform: translate(20px, -20px);
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--kpi-accent, #8b5cf6);
+    box-shadow: 0 0 12px var(--kpi-accent, #8b5cf6);
 }
 .kpi-number {
-    font-size: 2rem;
-    font-weight: 800;
+    font-size: 1.95rem;
+    font-weight: 700;
     line-height: 1;
     font-family: 'JetBrains Mono', monospace;
     letter-spacing: -1px;
 }
 .kpi-label {
-    font-size: 0.72rem;
+    font-size: 0.62rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
-    color: #7a8ba8;
-    margin-top: 0.4rem;
+    letter-spacing: 1.5px;
+    color: rgba(167,139,250,0.6);
+    margin-top: 0.5rem;
 }
 .kpi-delta {
-    font-size: 0.75rem;
-    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    margin-top: 0.45rem;
     font-weight: 500;
+    opacity: 0.8;
 }
 
 /* ─── Agent card ─────────────────────────────────────────────────────────── */
 .agent-card {
-    background: #131929;
-    border-radius: 10px;
-    padding: 1rem 1.1rem;
-    border: 1px solid #1e2d47;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(12,5,28,0.65);
+    border-radius: 14px;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
 }
 .agent-card:hover {
-    border-color: #00d4ff44;
-    box-shadow: 0 4px 16px rgba(0, 212, 255, 0.08);
+    border-color: rgba(139,92,246,0.3);
+    box-shadow: 0 8px 28px rgba(139,92,246,0.12);
+    transform: translateY(-2px);
 }
 .agent-card-top {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
+    gap: 0.4rem;
+    margin-bottom: 0.45rem;
 }
-.agent-icon {
-    font-size: 1.2rem;
-}
+.agent-icon { font-size: 1.1rem; }
 .agent-name {
-    font-size: 0.85rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    color: #c8d8f0;
+    color: #c4b5fd;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
 }
 .agent-badge {
-    margin-left: auto;
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-weight: 700;
-    padding: 0.15rem 0.5rem;
+    padding: 0.12rem 0.45rem;
     border-radius: 20px;
     text-transform: uppercase;
     letter-spacing: 0.8px;
 }
 .badge-complete {
-    background: #2ed57322;
-    color: #2ed573;
-    border: 1px solid #2ed57344;
+    background: rgba(45,212,191,0.12);
+    color: #2dd4bf;
+    border: 1px solid rgba(45,212,191,0.3);
 }
 .badge-running {
-    background: #ffa50222;
-    color: #ffa502;
-    border: 1px solid #ffa50244;
+    background: rgba(245,158,11,0.12);
+    color: #f59e0b;
+    border: 1px solid rgba(245,158,11,0.3);
 }
 .badge-failed {
-    background: #ff475722;
-    color: #ff4757;
-    border: 1px solid #ff475744;
+    background: rgba(244,63,94,0.12);
+    color: #f43f5e;
+    border: 1px solid rgba(244,63,94,0.3);
 }
 .agent-finding {
-    font-size: 0.75rem;
-    color: #7a8ba8;
+    font-size: 0.7rem;
+    color: rgba(167,139,250,0.55);
     line-height: 1.4;
     font-style: italic;
+    margin-top: 0.3rem;
 }
-.agent-status-icon {
-    font-size: 0.9rem;
-}
-
-/* ─── Timeline ───────────────────────────────────────────────────────────── */
-.timeline-container {
-    position: relative;
-    padding-left: 2rem;
-}
-.timeline-container::before {
-    content: '';
-    position: absolute;
-    left: 7px;
-    top: 8px;
-    bottom: 8px;
-    width: 2px;
-    background: linear-gradient(180deg, #ff4757, #ffa502, #00d4ff, #2ed573);
-    opacity: 0.4;
-}
-.timeline-item {
-    position: relative;
-    margin-bottom: 1rem;
-    padding: 0.6rem 0.8rem;
-    background: #131929;
-    border-radius: 8px;
-    border: 1px solid #1a2540;
-}
-.timeline-dot {
-    position: absolute;
-    left: -1.65rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 2px solid #0a0e1a;
-}
-.timeline-time {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    font-weight: 500;
-    margin-bottom: 0.2rem;
-}
-.timeline-desc {
-    font-size: 0.8rem;
-    color: #c8d8f0;
-    line-height: 1.4;
-}
-
-/* ─── Root cause alert ───────────────────────────────────────────────────── */
-.root-cause-block {
-    background: linear-gradient(135deg, #1a0a0a, #1a1000);
-    border: 1px solid #ff475744;
-    border-left: 4px solid #ff4757;
-    border-radius: 10px;
-    padding: 1.5rem;
-    position: relative;
-    overflow: hidden;
-}
-.root-cause-block::before {
-    content: '⚠';
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    font-size: 3rem;
-    opacity: 0.08;
-}
-.root-cause-title {
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #ff4757;
-    margin-bottom: 0.8rem;
-}
-.root-cause-body {
-    font-size: 0.9rem;
-    color: #f0d0d0;
-    line-height: 1.7;
-}
-.root-cause-detail {
-    margin-top: 0.8rem;
-    padding-top: 0.8rem;
-    border-top: 1px solid #ff475722;
-    font-size: 0.8rem;
-    color: #ffa50299;
-    font-family: 'JetBrains Mono', monospace;
-}
-
-/* ─── Alarm card ─────────────────────────────────────────────────────────── */
-.alarm-card {
-    background: #131929;
-    border-radius: 10px;
-    padding: 1.2rem 1.4rem;
-    border: 1px solid #1e2d47;
-    transition: border-color 0.2s ease;
-}
-.alarm-card:hover {
-    border-color: #1e3d6a;
-}
-.alarm-card-header {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-bottom: 0.6rem;
-}
-.alarm-name {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: #a0b8d8;
-    word-break: break-all;
-}
-.alarm-state-ok {
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 0.15rem 0.6rem;
-    border-radius: 20px;
-    background: #2ed57322;
-    color: #2ed573;
-    border: 1px solid #2ed57344;
-    white-space: nowrap;
-}
-.alarm-state-alarm {
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 0.15rem 0.6rem;
-    border-radius: 20px;
-    background: #ff475722;
-    color: #ff4757;
-    border: 1px solid #ff475744;
-    white-space: nowrap;
-}
-.alarm-state-insufficient {
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 0.15rem 0.6rem;
-    border-radius: 20px;
-    background: #ffa50222;
-    color: #ffa502;
-    border: 1px solid #ffa50244;
-    white-space: nowrap;
-}
-.alarm-desc {
-    font-size: 0.75rem;
-    color: #5a6a88;
-    line-height: 1.5;
-}
+.agent-status-icon { font-size: 0.85rem; }
 
 /* ─── Section header ─────────────────────────────────────────────────────── */
 .section-header {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
+    gap: 0.8rem;
     margin-bottom: 1.2rem;
-    padding-bottom: 0.6rem;
-    border-bottom: 1px solid #1e2d47;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid rgba(139,92,246,0.12);
 }
 .section-icon {
-    font-size: 1rem;
-    width: 28px;
-    height: 28px;
-    background: linear-gradient(135deg, #00d4ff22, #0066ff22);
-    border: 1px solid #00d4ff33;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: 0.95rem;
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(45,212,191,0.1));
+    border: 1px solid rgba(139,92,246,0.25);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
+    box-shadow: 0 0 12px rgba(139,92,246,0.15);
 }
 .section-title {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #00d4ff;
-}
-
-/* ─── Platform header bar ────────────────────────────────────────────────── */
-.platform-header {
-    background: linear-gradient(90deg, #0d1224 0%, #131929 50%, #0d1224 100%);
-    border: 1px solid #1e2d47;
-    border-radius: 12px;
-    padding: 1.2rem 2rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-.platform-title {
-    font-size: 1.4rem;
-    font-weight: 800;
-    background: linear-gradient(90deg, #00d4ff, #0066ff);
+    letter-spacing: 2.5px;
+    background: linear-gradient(90deg, #a78bfa, #2dd4bf);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    letter-spacing: -0.5px;
+}
+
+/* ─── Platform header ────────────────────────────────────────────────────── */
+.platform-header {
+    background: linear-gradient(135deg, rgba(20,5,45,0.9) 0%, rgba(12,3,28,0.95) 100%);
+    border: 1px solid rgba(139,92,246,0.2);
+    border-radius: 18px;
+    padding: 1.3rem 2rem;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 0 60px rgba(139,92,246,0.08), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.platform-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #c4b5fd 0%, #2dd4bf 60%, #c4b5fd 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.3px;
+    animation: shimmer 4s linear infinite;
+}
+@keyframes shimmer {
+    0%   { background-position: 0% center; }
+    100% { background-position: 200% center; }
 }
 .platform-subtitle {
-    font-size: 0.72rem;
-    color: #5a6a88;
+    font-size: 0.68rem;
+    color: rgba(167,139,250,0.45);
     text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-top: 0.2rem;
+    letter-spacing: 2.5px;
+    margin-top: 0.25rem;
 }
 .live-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: #2ed573;
-    background: #2ed57322;
-    border: 1px solid #2ed57344;
-    padding: 0.3rem 0.8rem;
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    font-size: 0.62rem; font-weight: 700;
+    color: #2dd4bf;
+    background: rgba(45,212,191,0.1);
+    border: 1px solid rgba(45,212,191,0.3);
+    padding: 0.3rem 0.9rem;
     border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    box-shadow: 0 0 14px rgba(45,212,191,0.15);
 }
 .live-dot {
-    width: 6px;
-    height: 6px;
-    background: #2ed573;
+    width: 6px; height: 6px;
+    background: #2dd4bf;
     border-radius: 50%;
-    animation: pulse 2s infinite;
+    animation: pulse-dot 2s infinite;
+    box-shadow: 0 0 6px #2dd4bf;
 }
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.8); }
+@keyframes pulse-dot {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%      { opacity:0.3; transform:scale(0.7); }
 }
 
 /* ─── Footer ─────────────────────────────────────────────────────────────── */
 .platform-footer {
-    background: #0d1224;
-    border: 1px solid #1e2d47;
-    border-radius: 8px;
+    background: rgba(12,5,28,0.65);
+    border: 1px solid rgba(139,92,246,0.12);
+    border-radius: 12px;
     padding: 0.8rem 1.5rem;
     margin-top: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 0.5rem;
 }
 .footer-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.68rem;
-    color: #3a4a60;
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.65rem;
+    color: rgba(167,139,250,0.35);
     font-family: 'JetBrains Mono', monospace;
 }
-.footer-item span.val {
-    color: #2ed573;
-    font-weight: 600;
-}
-.footer-sep {
-    color: #1e2d47;
-}
+.footer-item span.val { color: #2dd4bf; font-weight: 600; }
+.footer-sep { color: rgba(139,92,246,0.2); }
 
 /* ─── Sidebar ────────────────────────────────────────────────────────────── */
 .sidebar-logo {
-    font-size: 1.1rem;
-    font-weight: 800;
-    background: linear-gradient(90deg, #00d4ff, #0066ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 1px;
-    margin-bottom: 0.2rem;
+    font-size: 1.05rem; font-weight: 700;
+    background: linear-gradient(90deg, #c4b5fd, #2dd4bf);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; letter-spacing: 1px; margin-bottom: 0.2rem;
 }
 .sidebar-tagline {
-    font-size: 0.62rem;
-    color: #3a4a60;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 1rem;
+    font-size: 0.58rem; color: rgba(139,92,246,0.4);
+    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;
 }
 .sidebar-clock {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.4rem;
-    font-weight: 500;
-    color: #00d4ff;
-    letter-spacing: 2px;
+    font-size: 1.35rem; font-weight: 500;
+    color: #a78bfa; letter-spacing: 2px;
 }
 .sidebar-date {
-    font-size: 0.7rem;
-    color: #5a6a88;
-    margin-bottom: 1.2rem;
+    font-size: 0.68rem; color: rgba(167,139,250,0.4); margin-bottom: 1.2rem;
 }
 .sidebar-info-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.68rem;
-    padding: 0.4rem 0;
-    border-bottom: 1px solid #1a2540;
+    display: flex; justify-content: space-between;
+    font-size: 0.65rem; padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(139,92,246,0.08);
 }
-.sidebar-info-label { color: #3a4a60; }
-.sidebar-info-val { color: #a0b8d8; font-family: 'JetBrains Mono', monospace; }
-
-/* ─── Info warning ───────────────────────────────────────────────────────── */
-[data-testid="stAlert"] {
-    background: #131929 !important;
-    border-radius: 8px !important;
-    border: 1px solid #1e2d47 !important;
-}
+.sidebar-info-label { color: rgba(139,92,246,0.4); }
+.sidebar-info-val { color: #c4b5fd; font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -766,7 +581,8 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("""
-    <div style="font-size:0.65rem;color:#2a3a50;text-align:center;line-height:1.8;">
+    <div style="font-size:0.6rem;color:rgba(139,92,246,0.25);text-align:center;
+                line-height:1.9;font-family:'JetBrains Mono',monospace;">
         Sigma DataTech · Day 12<br>
         Multi-Agent Intelligence<br>
         Platform v1.0.0
@@ -774,19 +590,30 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
 
+# ── Nebula background orbs (fixed, behind everything) ────────────────────────
+st.markdown("""
+<div style="position:fixed;top:0;left:0;width:100vw;height:100vh;
+            pointer-events:none;z-index:0;overflow:hidden;">
+    <div style="position:absolute;top:-15%;left:-5%;width:65vw;height:65vw;border-radius:50%;
+                background:radial-gradient(circle,rgba(139,92,246,0.13) 0%,transparent 65%);"></div>
+    <div style="position:absolute;bottom:-20%;right:-5%;width:55vw;height:55vw;border-radius:50%;
+                background:radial-gradient(circle,rgba(45,212,191,0.09) 0%,transparent 65%);"></div>
+    <div style="position:absolute;top:35%;left:35%;width:35vw;height:35vw;border-radius:50%;
+                background:radial-gradient(circle,rgba(244,63,94,0.06) 0%,transparent 65%);"></div>
+</div>
+""", unsafe_allow_html=True)
+
 # ── Platform Header ───────────────────────────────────────────────────────────
 st.markdown(f"""
 <div class="platform-header">
     <div>
         <div class="platform-title">⚡ SIGMA INTELLIGENCE PLATFORM</div>
-        <div class="platform-subtitle">Autonomous Incident Recovery Command Center</div>
+        <div class="platform-subtitle">Autonomous Incident Recovery · Multi-Agent Orchestration</div>
     </div>
-    <div style="text-align:right;">
-        <div class="live-badge">
-            <div class="live-dot"></div> LIVE
-        </div>
-        <div style="font-size:0.65rem;color:#3a4a60;margin-top:0.4rem;
-                    font-family:'JetBrains Mono',monospace;">
+    <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+        <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+        <div style="font-size:0.62rem;color:rgba(139,92,246,0.4);
+                    font-family:'JetBrains Mono',monospace;letter-spacing:1px;">
             {now.strftime('%Y-%m-%d %H:%M:%S')} UTC
         </div>
     </div>
@@ -805,58 +632,22 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 kpis = [
-    {
-        "label":      "EXPECTED TRANSACTIONS",
-        "value":      f"{KPI_EXPECTED:,}",
-        "delta":      "Baseline volume",
-        "color":      "#00d4ff",
-        "delta_color":"#5a6a88",
-    },
-    {
-        "label":      "ACTUAL TRANSACTIONS",
-        "value":      f"{KPI_ACTUAL:,}",
-        "delta":      f"▼ {((KPI_EXPECTED - KPI_ACTUAL) / KPI_EXPECTED * 100):.0f}% below expected",
-        "color":      "#ff4757",
-        "delta_color":"#ff4757",
-    },
-    {
-        "label":      "MISSING TRANSACTIONS",
-        "value":      f"{KPI_MISSING:,}",
-        "delta":      "Gap detected by platform",
-        "color":      "#ffa502",
-        "delta_color":"#ffa502",
-    },
-    {
-        "label":      "RECORDS RECOVERED",
-        "value":      f"{KPI_RECOVERED:,}",
-        "delta":      "▲ Loaded to Snowflake · 0 duplicates",
-        "color":      "#2ed573",
-        "delta_color":"#2ed573",
-    },
-    {
-        "label":      "QUARANTINED",
-        "value":      f"{KPI_QUARANTINED:,}",
-        "delta":      "Data quality issues flagged",
-        "color":      "#ffa502",
-        "delta_color":"#7a8ba8",
-    },
-    {
-        "label":      "RECOVERY TIME",
-        "value":      f"{KPI_RECOVERY_SEC}s",
-        "delta":      "End-to-end · 0 human interventions",
-        "color":      "#2ed573",
-        "delta_color":"#2ed573",
-    },
+    {"label": "EXPECTED",  "value": f"{KPI_EXPECTED:,}",    "delta": "Daily baseline",                         "color": "#8b5cf6"},
+    {"label": "ACTUAL",    "value": f"{KPI_ACTUAL:,}",      "delta": f"▼ {(KPI_EXPECTED-KPI_ACTUAL)/KPI_EXPECTED*100:.0f}% below baseline", "color": "#f43f5e"},
+    {"label": "MISSING",   "value": f"{KPI_MISSING:,}",     "delta": "Gap flagged by agents",                  "color": "#f59e0b"},
+    {"label": "RECOVERED", "value": f"{KPI_RECOVERED:,}",   "delta": "▲ Loaded · 0 duplicates",                "color": "#2dd4bf"},
+    {"label": "QUARANTINE","value": f"{KPI_QUARANTINED:,}", "delta": "Quality issues isolated",                 "color": "#f59e0b"},
+    {"label": "REC. TIME", "value": f"{KPI_RECOVERY_SEC}s", "delta": "0 human interventions",                  "color": "#2dd4bf"},
 ]
 
 cols = st.columns(6)
 for col, kpi in zip(cols, kpis):
     with col:
         st.markdown(f"""
-        <div class="kpi-card" style="border-left-color:{kpi['color']};">
+        <div class="kpi-card" style="--kpi-accent:{kpi['color']};">
             <div class="kpi-number" style="color:{kpi['color']};">{kpi['value']}</div>
             <div class="kpi-label">{kpi['label']}</div>
-            <div class="kpi-delta" style="color:{kpi['delta_color']};">{kpi['delta']}</div>
+            <div class="kpi-delta" style="color:{kpi['color']};opacity:0.7;">{kpi['delta']}</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -876,7 +667,7 @@ st.markdown("""
 agent_cols = st.columns(7)
 for col, agent in zip(agent_cols, AGENTS):
     badge_class = f"badge-{agent['status']}"
-    badge_icon  = "✅" if agent["status"] == "complete" else ("⚡" if agent["status"] == "running" else "❌")
+    badge_icon  = "✦" if agent["status"] == "complete" else ("◌" if agent["status"] == "running" else "✕")
     badge_text  = agent["status"].upper()
     with col:
         st.markdown(f"""
@@ -885,7 +676,7 @@ for col, agent in zip(agent_cols, AGENTS):
                 <span class="agent-icon">{agent['icon']}</span>
                 <span class="agent-name">{agent['name']}</span>
             </div>
-            <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.5rem;">
+            <div style="display:flex;align-items:center;gap:0.35rem;margin-bottom:0.4rem;">
                 <span class="agent-status-icon">{badge_icon}</span>
                 <span class="agent-badge {badge_class}">{badge_text}</span>
             </div>
@@ -911,27 +702,29 @@ with col_timeline:
 
     timeline_html = (
         '<div style="position:relative;padding-left:1.8rem;'
-        'border-left:2px solid #1e2d47;margin-left:5px;">'
+        'border-left:2px solid rgba(139,92,246,0.18);margin-left:5px;">'
     )
     for t_ts, t_desc, severity in TIMELINE:
-        dot_color  = SEVERITY_COLORS.get(severity, "#5a6a88")
-        safe_desc  = _html.escape(t_desc)
-        safe_ts    = _html.escape(t_ts)
+        dot_color = SEVERITY_COLORS.get(severity, "#6d5a9a")
+        safe_desc = _html.escape(t_desc)
+        safe_ts   = _html.escape(t_ts)
         timeline_html += f"""
-        <div style="position:relative;margin-bottom:0.75rem;
-                    padding:0.55rem 0.75rem;
-                    background:#131929;border-radius:7px;
-                    border:1px solid #1a2540;">
+        <div style="position:relative;margin-bottom:0.65rem;
+                    padding:0.5rem 0.7rem;
+                    background:rgba(12,5,28,0.6);border-radius:10px;
+                    border:1px solid rgba(255,255,255,0.05);
+                    box-shadow:0 2px 12px rgba(0,0,0,0.25);">
             <div style="position:absolute;left:-1.45rem;top:50%;
                         transform:translateY(-50%);
-                        width:10px;height:10px;border-radius:50%;
-                        background:{dot_color};border:2px solid #0a0e1a;
-                        box-shadow:0 0 6px {dot_color}88;"></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;
-                        font-weight:600;color:{dot_color};margin-bottom:0.15rem;">
+                        width:9px;height:9px;border-radius:50%;
+                        background:{dot_color};border:2px solid #06000f;
+                        box-shadow:0 0 8px {dot_color}99;"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;
+                        font-weight:600;color:{dot_color};margin-bottom:0.12rem;
+                        letter-spacing:0.5px;">
                 {safe_ts}
             </div>
-            <div style="font-size:0.78rem;color:#c8d8f0;line-height:1.4;">
+            <div style="font-size:0.76rem;color:rgba(196,181,253,0.8);line-height:1.4;">
                 {safe_desc}
             </div>
         </div>"""
@@ -956,20 +749,22 @@ with col_root:
 
     safe_root = _html.escape(root_cause_text)
     st.markdown(f"""
-    <div style="background:linear-gradient(135deg,#1a0a0a,#1a1000);
-                border:1px solid #ff475744;border-left:4px solid #ff4757;
-                border-radius:10px;padding:1.4rem 1.5rem;position:relative;overflow:hidden;">
-        <div style="position:absolute;right:1rem;top:1rem;font-size:3rem;opacity:0.07;">⚠</div>
-        <div style="font-size:0.62rem;font-weight:700;text-transform:uppercase;
-                    letter-spacing:2px;color:#ff4757;margin-bottom:0.7rem;">
+    <div style="background:linear-gradient(135deg,rgba(30,5,15,0.85),rgba(25,8,5,0.85));
+                border:1px solid rgba(244,63,94,0.2);border-top:2px solid #f43f5e;
+                border-radius:14px;padding:1.3rem 1.4rem;position:relative;overflow:hidden;
+                box-shadow:0 8px 32px rgba(244,63,94,0.08),inset 0 1px 0 rgba(255,255,255,0.03);">
+        <div style="position:absolute;right:1rem;top:0.8rem;font-size:2.8rem;
+                    opacity:0.06;line-height:1;">⚠</div>
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;
+                    letter-spacing:2.5px;color:#f43f5e;margin-bottom:0.65rem;">
             ⚠ Critical Root Cause Identified
         </div>
-        <div style="font-size:0.88rem;color:#f0d0d0;line-height:1.7;margin-bottom:0.8rem;">
+        <div style="font-size:0.85rem;color:rgba(255,200,210,0.85);line-height:1.7;margin-bottom:0.75rem;">
             {safe_root}
         </div>
-        <div style="border-top:1px solid #ff475722;padding-top:0.7rem;
-                    font-size:0.75rem;color:#ffa50299;
-                    font-family:'JetBrains Mono',monospace;line-height:1.8;">
+        <div style="border-top:1px solid rgba(244,63,94,0.12);padding-top:0.65rem;
+                    font-size:0.7rem;color:rgba(245,158,11,0.6);
+                    font-family:'JetBrains Mono',monospace;line-height:1.9;">
             COMPONENT  : sigma-data-producer Lambda<br>
             EVENT      : v1 → v2 deploy at 02:11 UTC<br>
             MECHANISM  : merchant_name → merchant_nm + DD-MM-YYYY date format<br>
@@ -984,30 +779,34 @@ with col_root:
 
     # Fix applied — 3 bullet steps, always hardcoded so they render cleanly
     st.markdown("""
-    <div style="background:linear-gradient(135deg,#0a1a0a,#0a1500);
-                border:1px solid #2ed57344;border-left:4px solid #2ed573;
-                border-radius:10px;padding:1.2rem 1.4rem;">
-        <div style="font-size:0.62rem;font-weight:700;text-transform:uppercase;
-                    letter-spacing:2px;color:#2ed573;margin-bottom:0.8rem;">
-            ✅ Fix Applied — 3 Steps
+    <div style="background:linear-gradient(135deg,rgba(5,20,15,0.85),rgba(3,18,12,0.85));
+                border:1px solid rgba(45,212,191,0.18);border-top:2px solid #2dd4bf;
+                border-radius:14px;padding:1.2rem 1.4rem;
+                box-shadow:0 8px 32px rgba(45,212,191,0.06),inset 0 1px 0 rgba(255,255,255,0.03);">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;
+                    letter-spacing:2.5px;color:#2dd4bf;margin-bottom:0.8rem;">
+            ✦ Resolution Applied — 3 Steps
         </div>
-        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div style="display:flex;flex-direction:column;gap:0.55rem;">
             <div style="display:flex;align-items:flex-start;gap:0.6rem;">
-                <span style="color:#2ed573;font-size:0.8rem;font-weight:700;flex-shrink:0;">1.</span>
-                <span style="font-size:0.82rem;color:#c8f0d8;line-height:1.5;">
-                    <strong style="color:#2ed573;">Rollback</strong> — sigma-data-producer reverted v2 → v1 via LIVE alias update. Schema mismatch eliminated immediately.
+                <span style="color:#2dd4bf;font-size:0.78rem;font-weight:700;
+                             flex-shrink:0;font-family:'JetBrains Mono',monospace;">01</span>
+                <span style="font-size:0.8rem;color:rgba(167,230,220,0.85);line-height:1.5;">
+                    <strong style="color:#2dd4bf;">Rollback</strong> — sigma-data-producer LIVE alias reverted v2 → v1. Schema mismatch eliminated at source.
                 </span>
             </div>
             <div style="display:flex;align-items:flex-start;gap:0.6rem;">
-                <span style="color:#2ed573;font-size:0.8rem;font-weight:700;flex-shrink:0;">2.</span>
-                <span style="font-size:0.82rem;color:#c8f0d8;line-height:1.5;">
-                    <strong style="color:#2ed573;">Recovery</strong> — 847 missing records replayed from S3 disaster prefix with field remapping. Idempotent MERGE — 0 duplicates.
+                <span style="color:#2dd4bf;font-size:0.78rem;font-weight:700;
+                             flex-shrink:0;font-family:'JetBrains Mono',monospace;">02</span>
+                <span style="font-size:0.8rem;color:rgba(167,230,220,0.85);line-height:1.5;">
+                    <strong style="color:#2dd4bf;">Recovery</strong> — 847 records replayed from S3 disaster prefix with field remapping. Idempotent MERGE — 0 duplicates.
                 </span>
             </div>
             <div style="display:flex;align-items:flex-start;gap:0.6rem;">
-                <span style="color:#2ed573;font-size:0.8rem;font-weight:700;flex-shrink:0;">3.</span>
-                <span style="font-size:0.82rem;color:#c8f0d8;line-height:1.5;">
-                    <strong style="color:#2ed573;">Hardening</strong> — 3 CloudWatch alarms deployed: zero-load, version-change, row-divergence. Next incident detected in &lt;10 min.
+                <span style="color:#2dd4bf;font-size:0.78rem;font-weight:700;
+                             flex-shrink:0;font-family:'JetBrains Mono',monospace;">03</span>
+                <span style="font-size:0.8rem;color:rgba(167,230,220,0.85);line-height:1.5;">
+                    <strong style="color:#2dd4bf;">Hardening</strong> — 3 CloudWatch alarms live: zero-load, version-change, row-divergence. Next incident detected in &lt;10 min.
                 </span>
             </div>
         </div>
@@ -1037,8 +836,8 @@ with col_donut:
         values=[KPI_RECOVERED, KPI_QUARANTINED],
         hole=0.72,
         marker=dict(
-            colors=["#2ed573", "#ffa502"],
-            line=dict(color="#0a0e1a", width=3),
+            colors=["#2dd4bf", "#f59e0b"],
+            line=dict(color="#06000f", width=3),
         ),
         textinfo="none",
         hovertemplate="<b>%{label}</b><br>%{value:,} records<br>%{percent:.1%}<extra></extra>",
@@ -1047,7 +846,7 @@ with col_donut:
     fig.add_annotation(
         text=f"<b>100%</b><br><span style='font-size:11px'>Accounted</span>",
         x=0.5, y=0.5,
-        font=dict(size=22, color="#2ed573", family="JetBrains Mono"),
+        font=dict(size=22, color="#2dd4bf", family="JetBrains Mono"),
         showarrow=False,
         align="center",
     )
@@ -1055,7 +854,7 @@ with col_donut:
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#7a8ba8", family="Inter"),
+        font=dict(color="rgba(167,139,250,0.5)", family="Space Grotesk"),
         showlegend=True,
         legend=dict(
             orientation="h",
@@ -1073,12 +872,12 @@ with col_donut:
 with col_stats:
     # Recovery stats as styled boxes
     stats = [
-        ("Disaster Batch",         f"{DISASTER_TOTAL:,}", "#00d4ff"),
-        ("Recovered",              f"{KPI_RECOVERED:,}",  "#2ed573"),
-        ("Quarantined",            f"{KPI_QUARANTINED:,}", "#ffa502"),
-        ("Recovery Rate",          f"{KPI_RECOVERED / DISASTER_TOTAL * 100:.1f}%", "#2ed573"),
-        ("Duplicates Inserted",    "0",                   "#2ed573"),
-        ("Time to Recovery",       f"{KPI_RECOVERY_SEC}s","#2ed573"),
+        ("Disaster Batch",      f"{DISASTER_TOTAL:,}",                              "#8b5cf6"),
+        ("Recovered",           f"{KPI_RECOVERED:,}",                               "#2dd4bf"),
+        ("Quarantined",         f"{KPI_QUARANTINED:,}",                             "#f59e0b"),
+        ("Recovery Rate",       f"{KPI_RECOVERED / DISASTER_TOTAL * 100:.1f}%",     "#2dd4bf"),
+        ("Duplicates",          "0",                                                "#2dd4bf"),
+        ("Time to Recovery",    f"{KPI_RECOVERY_SEC}s",                             "#2dd4bf"),
     ]
 
     stat_pairs = [stats[i:i+2] for i in range(0, len(stats), 2)]
@@ -1087,20 +886,22 @@ with col_stats:
         for sc, (label, val, color) in zip(subcols, pair):
             with sc:
                 st.markdown(f"""
-                <div style="background:#131929;border:1px solid #1e2d47;border-radius:8px;
-                            padding:0.8rem 1rem;margin-bottom:0.6rem;">
-                    <div style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;
+                <div style="background:rgba(12,5,28,0.6);border:1px solid rgba(255,255,255,0.05);
+                            border-radius:10px;padding:0.75rem 0.9rem;margin-bottom:0.5rem;
+                            box-shadow:0 2px 12px rgba(0,0,0,0.25);">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:1.25rem;
                                 font-weight:700;color:{color};">{val}</div>
-                    <div style="font-size:0.65rem;font-weight:600;text-transform:uppercase;
-                                letter-spacing:1px;color:#3a4a60;margin-top:0.25rem;">{label}</div>
+                    <div style="font-size:0.6rem;font-weight:600;text-transform:uppercase;
+                                letter-spacing:1.2px;color:rgba(139,92,246,0.4);margin-top:0.2rem;">{label}</div>
                 </div>
                 """, unsafe_allow_html=True)
 
     st.markdown("""
-    <div style="background:linear-gradient(90deg,#0a1a0a,#0d1a10);
-                border:1px solid #2ed57322;border-radius:8px;padding:0.7rem 1rem;
-                font-size:0.75rem;color:#2ed573;margin-top:0.4rem;">
-        🛡 Idempotent MERGE used — duplicate insertion impossible
+    <div style="background:linear-gradient(90deg,rgba(5,18,14,0.8),rgba(3,15,12,0.8));
+                border:1px solid rgba(45,212,191,0.15);border-radius:10px;
+                padding:0.65rem 1rem;font-size:0.72rem;color:#2dd4bf;margin-top:0.4rem;
+                font-family:'JetBrains Mono',monospace;letter-spacing:0.3px;">
+        ✦ Idempotent MERGE ON transaction_id — replay-safe, zero duplicate risk
     </div>
     """, unsafe_allow_html=True)
 
@@ -1137,10 +938,10 @@ alarm_cols = st.columns(3)
 for col, alarm in zip(alarm_cols, alarm_display):
     state = alarm["state"]
     if state == "OK":
-        border_color = "#2ed573"
-        badge_bg     = "#0a2a1a"
-        badge_color  = "#2ed573"
-        state_label  = "🟢 OK"
+        border_color = "#2dd4bf"
+        badge_bg     = "rgba(5,20,18,0.8)"
+        badge_color  = "#2dd4bf"
+        state_label  = "✦ OK"
     elif state == "ALARM":
         # check if this is an expected / by-design alarm
         is_expected  = alarm["name"] in ALARM_IDLE_NOTE
