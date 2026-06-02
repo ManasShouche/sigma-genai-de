@@ -52,7 +52,7 @@ KPI_EXPECTED     = 120_000
 KPI_ACTUAL       = 40_000
 KPI_MISSING      = 80_000
 KPI_RECOVERED    = 847
-KPI_QUARANTINED  = 2
+KPI_QUARANTINED  = 23
 KPI_RECOVERY_SEC = 61
 
 # ── Agent results (hardcoded — all 7 completed) ───────────────────────────────
